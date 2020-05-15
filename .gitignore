@@ -1,6 +1,7 @@
 /node_modules/
-/lib/
+/dist/
 npm-debug.log
 .DS_Store
 /yarn.lock
+/yarn-error.log
 /.npmrc
