@@ -1,1 +1,1 @@
-# react-tableau-embed
+# react-tableau-view
