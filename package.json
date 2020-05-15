@@ -1,7 +1,7 @@
 {
-  "name": "react-tableau-embed",
+  "name": "react-tableau-view",
   "version": "0.0.1",
-  "description": "Tableau report embed with react",
+  "description": "Tableau view integrated with react and taleau's javascript API",
   "main": "dist/index.js",
   "author": "Birendra Kumar <birendra12sep@gmail.com>",
   "license": "MIT",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://birendra90@github.com/birendra90/react-tableau-embed.git"
+    "url": "git+https://birendra90@github.com/birendra90/react-tableau-view.git"
   },
   "keywords": [
     "tableau",
