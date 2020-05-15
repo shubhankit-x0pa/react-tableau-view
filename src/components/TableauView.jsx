@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-class TableauReport extends Component {
+class TableauView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,14 +12,14 @@ class TableauReport extends Component {
   render() {
     return (
       <div>
-        Tableau Report
+        Tableau View
       </div>
     )
   }
 }
 
-TableauReport.apply.propTypes = {
+TableauView.apply.propTypes = {
 
 };
 
-export default TableauReport;
+export default TableauView;

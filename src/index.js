@@ -1,1 +1,1 @@
-export {default} from './components/TableauReport';
+export {default} from './components/TableauView';

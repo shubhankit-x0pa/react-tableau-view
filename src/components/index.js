@@ -1,1 +1,1 @@
-export {default} from './TableauReport';
+export {default} from './TableauView';
