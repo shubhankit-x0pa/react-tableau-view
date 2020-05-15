@@ -1,17 +1,17 @@
 {
   "name": "react-tableau-view",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tableau view integrated with react and tableau's javascript API",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "author": "Birendra Kumar <birendra12sep@gmail.com>",
   "license": "MIT",
   "private": false,
   "files": [
-    "dist/"
+    "lib/"
   ],
   "scripts": {
     "test": "echo \"No test specified\"",
-    "build": "rimraf dist/ && babel src/ --out-dir dist",
+    "build": "rimraf lib/ && babel src/ --out-dir lib",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -20,8 +20,7 @@
   },
   "keywords": [
     "tableau",
-    "react",
-    "jsx"
+    "react"
   ],
   "dependencies": {
     "prop-types": "^15.7.2",
