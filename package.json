@@ -2,7 +2,7 @@
   "name": "react-tableau-embed",
   "version": "0.0.1",
   "description": "Tableau report embed with react",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "Birendra Kumar <birendra12sep@gmail.com>",
   "license": "MIT",
   "private": false,
