@@ -1,7 +1,7 @@
 {
   "name": "react-tableau-view",
   "version": "0.0.1",
-  "description": "Tableau view integrated with react and taleau's javascript API",
+  "description": "Tableau view integrated with react and tableau's javascript API",
   "main": "dist/index.js",
   "author": "Birendra Kumar <birendra12sep@gmail.com>",
   "license": "MIT",

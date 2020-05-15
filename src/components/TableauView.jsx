@@ -1,24 +1,23 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-class TableauView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+const TableauView = (props) => {
+  const {
+    className,
+  } = props;
 
-    }
-  }
-  
-  render() {
-    return (
-      <div>
-        Tableau View
-      </div>
-    )
-  }
+  return (
+    <div className={className}>
+      Tableau View
+    </div>
+  );
 }
 
-TableauView.apply.propTypes = {
+TableauView.propTypes = {
+  className: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
 
 };
 
