@@ -8,7 +8,7 @@ class Utils {
    * @return {string} constructedURL The new tableau view url
    */
   static constructTrustedTicketURL(trustedURL, ticket) {
-    const parsedURL = url.parse(_url, true);
+    const parsedURL = url.parse(trustedURL, true);
     const {protocol, host, pathname} = parsedURL;
 
     return `${protocol}//${host}/trusted/${ticket}${pathname}`;
