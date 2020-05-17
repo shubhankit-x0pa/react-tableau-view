@@ -12,6 +12,9 @@ class TableauView extends Component {
     this.state = {
       viz: null,
       loading: false,
+      filters: this.props.filters,
+      parameters: this.props.parameters,
+      url: this.props.url,
     };
     this.tableauVizEl = createRef();
     this.sheet = null;
@@ -22,17 +25,21 @@ class TableauView extends Component {
     this.initViz();
   }
 
-  static getDrivedStateFromProps() {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.url !== prevState.url) {
+      TableauView.initViz(nextProps.url);
+      return {url: nextProps.url};
+    }
     return null;
   }
 
   /**
    * Get the tableau viz url. If ticket given then generate trusted ticket tableau viz url 
-   * @param {void}
+   * @param {string} url The new URl 
    * @return {string} URL The tableau viz url
    */
-  getTableauVizURL() {
-    const {url, ticket, queryParams} = this.props;
+  getTableauVizURL(url) {
+    const {ticket, queryParams} = this.props;
     if (!url) {
       throw new Error('Error: Please give the valid url');
     }
@@ -51,11 +58,12 @@ class TableauView extends Component {
    * @param {void}
    * @return {void}
    */
-  initViz() {
-    const {filters, parameters, options: propOptions} = this.props;
+  initViz(newURL) {
+    console.log('---newURL--', newURL)
+    const {url, filters, parameters, options: propOptions} = this.props;
     const {viz} = this.state;
 
-    const tableauVizUrl = this.getTableauVizURL();
+    const tableauVizUrl = this.getTableauVizURL(newURL || url);
 
     const options = {
       ...filters,
