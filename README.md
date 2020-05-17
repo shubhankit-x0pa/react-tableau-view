@@ -47,3 +47,7 @@ To
 ```shell
 https://your-tableau-server/views/your-workbook/your-view
 ```
+
+## CodeSandbox Example
+
+- [Demo](https://codesandbox.io/s/blazing-rgb-4vb6n)

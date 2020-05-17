@@ -9,26 +9,21 @@ class TableauView extends Component {
   
   constructor(props) {
     super(props);
-    this.tableauVizEl = createRef();
     this.state = {
       viz: null,
+      loading: false,
     };
+    this.tableauVizEl = createRef();
+    this.sheet = null;
   }
   
-  // const [tableauViz, setTableauViz] = useState(null);
-  // const {
-  //   className,
-  //   url,
-  //   ticket,
-  //   queryParams = '?:toolbar=yes&:embed=yes&:refresh=yes&:comments=no',
-  //   options,
-  //   filters,
-  //   parameters,
-  // } = props;
-
   componentDidMount() {
     // Calling the function after the page has loaded
     this.initViz();
+  }
+
+  static getDrivedStateFromProps() {
+    return null;
   }
 
   /**
@@ -68,14 +63,14 @@ class TableauView extends Component {
       ...propOptions,
       onFirstInteractive: () => {
         if (viz) {
-          let sheet = viz.getWorkbook().getActiveSheet();
+          this.sheet = viz.getWorkbook().getActiveSheet();
 
           // Check child sheets exist or not.
-          if (typeof sheet.getWorksheets !== 'undefined') {
-            const childSheets = sheet.getWorksheets();
+          if (typeof this.sheet.getWorksheets !== 'undefined') {
+            const childSheets = this.sheet.getWorksheets();
 
             if (childSheets && childSheets.length) {
-              sheet = childSheets[0];
+              this.sheet = childSheets[0];
             }
           }
         }
@@ -89,11 +84,11 @@ class TableauView extends Component {
     }
 
     let updatedViz = new tableauSoftware.Viz(this.tableauVizEl, tableauVizUrl, options);
-    this.setState({ viz: updatedViz });
+    this.setState({viz: updatedViz});
   };
 
   render() {
-    const { className} = this.props;
+    const {className} = this.props;
     return (
       <div className={`Tableau-view-container ${className}`}>
         <div ref={this.tableauVizEl} />
@@ -101,6 +96,13 @@ class TableauView extends Component {
     );
   }
 }
+
+TableauView.defaultProps = {
+  parameters: {},
+  filters: {},
+  options: {},
+  queryParams: '?:toolbar=yes&:embed=yes&:refresh=yes&:comments=no',
+};
 
 TableauView.propTypes = {
   url: PropTypes.string.isRequired,
