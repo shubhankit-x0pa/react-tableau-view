@@ -1,4 +1,4 @@
-import React, {createRef, Component} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import shallowequal from 'shallowequal';
 import URL from 'url';
@@ -22,15 +22,15 @@ class TableauView extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const hasReportChanged = prevProps.url !== this.props.url;
+    const hasUrlChanged = prevProps.url !== this.props.url;
     const hasFiltersChanged = !shallowequal(prevProps.filters, this.props.filters, Utils.compareArrays);
 
-    if (hasReportChanged) {
+    if (hasUrlChanged) {
       this.initViz(this.props.url);
     }
 
     // Call the tableau filter api once the filters has changed
-    if (!hasReportChanged && hasFiltersChanged) {
+    if (!hasUrlChanged && hasFiltersChanged) {
       this.onApplyFilters(prevProps.filters);
     }
   }
