@@ -1,6 +1,6 @@
 {
   "name": "react-tableau-view",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Tableau view integrated with react and tableau's javascript API",
   "main": "lib/index.js",
   "author": "Birendra Kumar <birendra12sep@gmail.com>",
@@ -26,7 +26,6 @@
   "dependencies": {
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "shallowequal": "^1.1.0",
     "url": "^0.11.0"
   },
@@ -35,7 +34,6 @@
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
-    "babel-loader": "^8.1.0",
     "rimraf": "^3.0.2"
   }
 }

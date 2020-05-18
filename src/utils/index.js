@@ -13,6 +13,21 @@ class Utils {
 
     return `${protocol}//${host}/trusted/${ticket}${pathname}`;
   };
+  
+  /**
+   * Compare two arrays
+   * @param {Array<number>} firstArray
+   * @param {Array<number>} secondArray
+   * @return {boolean} true OR false
+   */
+  static compareArrays(firstArray, secondArray) {
+
+    if (Array.isArray(firstArray) && Array.isArray(secondArray)) {
+      return firstArray.sort().toString() === secondArray.sort().toString();
+    }
+
+    return false;
+  };
 }
 
 export default Utils;

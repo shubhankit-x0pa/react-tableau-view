@@ -1,6 +1,6 @@
 import React, {createRef, Component} from 'react';
-
 import PropTypes from 'prop-types';
+import shallowequal from 'shallowequal';
 import URL from 'url';
 
 import Utils from '../utils';
@@ -9,14 +9,10 @@ class TableauView extends Component {
   
   constructor(props) {
     super(props);
-    this.state = {
-      viz: null,
-      loading: false,
-      filters: this.props.filters,
-      parameters: this.props.parameters,
-      url: this.props.url,
-    };
-    this.tableauVizEl = createRef();
+
+    // Define the global to use through out the class
+    this.viz = null;
+    this.workbook = null;
     this.sheet = null;
   }
   
@@ -25,12 +21,42 @@ class TableauView extends Component {
     this.initViz();
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.url !== prevState.url) {
-      TableauView.initViz(nextProps.url);
-      return {url: nextProps.url};
+  componentDidUpdate(prevProps) {
+    const hasReportChanged = prevProps.url !== this.props.url;
+    const hasFiltersChanged = !shallowequal(prevProps.filters, this.props.filters, Utils.compareArrays);
+
+    if (hasReportChanged) {
+      this.initViz(this.props.url);
     }
-    return null;
+
+    // Call the tableau filter api once the filters has changed
+    if (!hasReportChanged && hasFiltersChanged) {
+      this.onApplyFilters(prevProps.filters);
+    }
+  }
+
+  /**
+   * Asynchronously applies a simple categorical filter (non-date) on the worksheet.
+   * Did not applying filters which already has been filtered.
+   * @param  {Object} prevFilters
+   * @return {void}
+   */
+  onApplyFilters(prevFilters) {
+    const {filters} = this.props;
+    const promises = [];
+
+    for (const key in filters) {
+      if (
+        !prevFilters.hasOwnProperty(key) ||
+        !Utils.compareArrays(prevFilters[key], filters[key])
+      ) {
+        promises.push(
+          this.sheet.applyFilterAsync(key, filters[key], Tableau.FilterUpdateType.REPLACE)
+        );
+      }
+    }
+
+    Promise.all(promises).then(() => {});
   }
 
   /**
@@ -59,19 +85,16 @@ class TableauView extends Component {
    * @return {void}
    */
   initViz(newURL) {
-    console.log('---newURL--', newURL)
-    const {url, filters, parameters, options: propOptions} = this.props;
-    const {viz} = this.state;
+    const {url, filters, options: propOptions} = this.props;
 
     const tableauVizUrl = this.getTableauVizURL(newURL || url);
-
     const options = {
       ...filters,
-      ...parameters,
       ...propOptions,
       onFirstInteractive: () => {
-        if (viz) {
-          this.sheet = viz.getWorkbook().getActiveSheet();
+        if (this.viz) {
+          this.workbook = viz.getWorkbook();
+          this.sheet = this.workbook.getActiveSheet();
 
           // Check child sheets exist or not.
           if (typeof this.sheet.getWorksheets !== 'undefined') {
@@ -85,28 +108,27 @@ class TableauView extends Component {
       }
     };
 
-    // to clean the previous viz
-    if (viz) {
-      viz.dispose();
-      this.setState({viz: null});
+    // If a viz object exists, delete it
+    if (this.viz) {
+      this.viz.dispose();
+      this.viz = null;
     }
 
-    let updatedViz = new tableauSoftware.Viz(this.tableauVizEl, tableauVizUrl, options);
-    this.setState({viz: updatedViz});
+    // Create a new viz object and embed it in the container child div.
+    this.viz = new tableauSoftware.Viz(this.tableauVizEl, tableauVizUrl, options);
   };
 
   render() {
     const {className} = this.props;
     return (
       <div className={`Tableau-view-container ${className}`}>
-        <div ref={this.tableauVizEl} />
+        <div ref={el => this.tableauVizEl = el} />
       </div>
     );
   }
 }
 
 TableauView.defaultProps = {
-  parameters: {},
   filters: {},
   options: {},
   queryParams: '?:toolbar=yes&:embed=yes&:refresh=yes&:comments=no',
@@ -125,7 +147,6 @@ TableauView.propTypes = {
   queryParams: PropTypes.string,
   options: PropTypes.object,
   filters: PropTypes.object,
-  parameters: PropTypes.object,
 };
 
 export default TableauView;
